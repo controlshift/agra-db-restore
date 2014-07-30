@@ -8,18 +8,27 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # All Vagrant configuration is done here. The most common configuration
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.
+  config.dotenv.enabled = true
 
-  # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "hashicorp/precise64"
   config.vm.provision :shell, path: "bootstrap.sh"
-
-  # Disable automatic box update checking. If you disable this, then
-  # boxes will only be checked for updates when the user runs
-  # `vagrant box outdated`. This is not recommended.
-  # config.vm.box_check_update = false
   
-  config.vm.provider "virtualbox" do |v| 
+  config.vm.provider "virtualbox" do |v, override| 
+    override.vm.box = "hashicorp/precise64"
+  
     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  end
+  
+  config.vm.provider :aws do |aws, override|
+    aws.access_key_id = ENV['ACCESS_KEY_ID']
+    aws.secret_access_key = ENV['SECRET_ACCESS_KEY']
+    aws.keypair_name = ENV['KEYPAIR_NAME']
+
+    aws.ami = "ami-7747d01e"
+    override.vm.box = "dummy"
+    override.vm.security_groups = ['ci', 'default']
+    
+    override.ssh.username = "ubuntu"
+    override.ssh.private_key_path = ENV['PRIVATE_KEY_PATH']
   end
 
   # Create a forwarded port mapping which allows access to a specific port
