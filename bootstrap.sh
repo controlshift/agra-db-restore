@@ -1,3 +1,4 @@
+source /vagrant/.env
 apt-get update
 apt-get install -y curl wget
 
@@ -186,5 +187,11 @@ sudo make install
 sudo ldconfig
 sudo make comments-install
 cd ..
+
+# install aws-cli
+sudo apt-get install -y openjdk-7-jre
+sudo apt-get install -y python-pip
+sudo pip install awscli
+
 echo "bootstrap completed."
 

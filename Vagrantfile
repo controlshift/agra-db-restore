@@ -8,25 +8,25 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # All Vagrant configuration is done here. The most common configuration
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.
-  config.dotenv.enabled = true
 
-  config.vm.provision :shell, path: "bootstrap.sh"
+  config.vm.provision :shell, path: "bootstrap.sh", run: "once"
   
   config.vm.provider "virtualbox" do |v, override| 
-    override.vm.box = "hashicorp/precise64"
-  
+    override.vm.box = "hashicorp/precise64"  
     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
   end
   
   config.vm.provider :aws do |aws, override|
-    aws.access_key_id = ENV['ACCESS_KEY_ID']
-    aws.secret_access_key = ENV['SECRET_ACCESS_KEY']
+    aws.access_key_id = ENV['AWS_ACCESS_KEY_ID']
+    aws.secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
     aws.keypair_name = ENV['KEYPAIR_NAME']
 
-    aws.ami = "ami-7747d01e"
+    aws.ami = "ami-645b920c"
+    aws.instance_type = "c3.large"
+    aws.block_device_mapping = [{ 'DeviceName' => '/dev/sda1', 'Ebs.VolumeSize' => 60 }]
     override.vm.box = "dummy"
-    override.vm.security_groups = ['ci', 'default']
-    
+    aws.security_groups = ['ci', 'default']
+        
     override.ssh.username = "ubuntu"
     override.ssh.private_key_path = ENV['PRIVATE_KEY_PATH']
   end
