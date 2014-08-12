@@ -24,6 +24,10 @@ First, install some things:
     
 Then, create a <code>.env</code> with appropriate values based on <code>.env.sample</code>.
 
+Load those environment variables:
+
+    source .env
+
 Finally, spin up the box:
 
     vagrant up --provider=aws
