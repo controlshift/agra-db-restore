@@ -22,7 +22,7 @@ First, install some things:
     vagrant plugin install vagrant-aws
     vagrant box add dummy https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box
     
-Then, update .env with the correct values, and source .env to get the environment variables.
+Then, create a <code>.env</code> with appropriate values based on <code>.env.sample</code>.
 
 Finally, spin up the box:
 
