@@ -8,9 +8,9 @@ RailsMachine generates backups with OmniPTR. Vagrantfile automates provisioning 
 Requires: http://docs.vagrantup.com/v2/installation/index.html
 
 To install pg 9.2 and deps on a local virtualbox vm:
-   vagrant up
+    vagrant up
 
 For AWS:
-   vagrant plugin install vagrant-dotenv
-   vagrant plugin install vagrant-aws
-   vagrant box add dummy https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box
+    vagrant plugin install vagrant-dotenv
+    vagrant plugin install vagrant-aws
+    vagrant box add dummy https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box
