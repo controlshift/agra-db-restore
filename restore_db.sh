@@ -1,3 +1,6 @@
+#!/bin/bash
+set -x  # Echo commands and expand variables
+
 source /vagrant/.env
 
 # Edit postgresql.conf to change listen address to '*':
@@ -17,4 +20,4 @@ aws s3 cp s3://agra-db-backups/backups/db2.agra.managedmachine.com-xlog-2014-03-
 sudo tar -zxvf /tmp/db2.agra.managedmachine.com-data-2014-03-24.tar.gz -C /var/lib/postgresql/9.2
 sudo tar -zxvf /tmp/db2.agra.managedmachine.com-xlog-2014-03-24.tar.gz -C /var/lib/postgresql/9.2
 
-service postgresql start
+sudo service postgresql start
