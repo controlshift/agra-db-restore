@@ -7,15 +7,9 @@ RailsMachine generates backups with OmniPTR. Vagrantfile automates provisioning 
 
 Requires: http://docs.vagrantup.com/v2/installation/index.html
 
-Locally
--------
-To install pg 9.2 and deps on a local virtualbox vm:
-
-    vagrant up
-
-In AWS
-------
-You may want to spin up the box in AWS, to facilitate retrieving backups from S3.  Here's how.
+Spinning up the VM
+------------------
+We'll spin up the box in AWS, to facilitate retrieving backups from S3.
 
 First, install some things:
 
@@ -31,3 +25,13 @@ Load those environment variables:
 Finally, spin up the box:
 
     vagrant up --provider=aws
+
+Restoring the DB
+----------------
+Go to the directory where Vagrant put the scripts:
+
+    cd /vagrant
+
+Run the <code>restore_db.sh</code> script, specifying a date in ISO 8601 format, like so:
+
+    ./restore_db.sh 2014-03-24
