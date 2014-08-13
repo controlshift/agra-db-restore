@@ -28,6 +28,10 @@ Finally, spin up the box:
 
 Restoring the DB
 ----------------
+SSH to the new VM:
+
+    vagrant ssh
+
 Go to the directory where Vagrant put the scripts:
 
     cd /vagrant
