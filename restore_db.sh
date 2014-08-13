@@ -27,12 +27,16 @@ if [ -z $1 ]; then
 fi
 DATABASE_DATE=$1
 
-# Edit postgresql.conf to change listen address to '*':
+# Make some edits to postgresql.conf
 if [ -z $PG_CONF ]; then
   echo "Using default pg conf location"
   PG_CONF="/etc/postgresql/9.2/main/postgresql.conf"
 fi
+# change listen address to '*':
 sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" "$PG_CONF"
+# Decomment a couple options recommended by RM so pg will come up
+sudo sed -i "s/#hot_standby = off/hot_standby = off/" "$PG_CONF"
+sudo sed -i "s/#archive_mod = off/archive_mod = off/" "$PG_CONF"
 
 # stop while we mess around
 sudo service postgresql stop
@@ -42,6 +46,9 @@ sudo mv /var/lib/postgresql/9.2/main /var/lib/postgresql/9.2/main.old
 
 # get the backup file 
 retrieve_and_unpack_backups $DATABASE_DATE
+
+# The backup_label file is broken due to a bug.  It confuses pg.  Get rid of it.
+sudo rm /var/lib/postgresql/9.2/main/backup_label
 
 # bring the db back up
 sudo service postgresql start
