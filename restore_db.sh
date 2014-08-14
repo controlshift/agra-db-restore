@@ -7,6 +7,11 @@ retrieve_and_unpack_backups() {
   aws s3 cp s3://agra-db-backups/backups/db2.agra.managedmachine.com-data-${TARGET_DATE}.tar.gz /tmp/db2.agra.managedmachine.com-data-${TARGET_DATE}.tar.gz
   aws s3 cp s3://agra-db-backups/backups/db2.agra.managedmachine.com-xlog-${TARGET_DATE}.tar.gz /tmp/db2.agra.managedmachine.com-xlog-${TARGET_DATE}.tar.gz
 
+  if [ ! -e /tmp/db2.agra.managedmachine.com-data-${TARGET_DATE}.tar.gz ] || [ ! -e /tmp/db2.agra.managedmachine.com-xlog-${TARGET_DATE}.tar.gz ]; then
+    echo "Files not successfully retrieved from S3.  Have they been retrieved from glacier yet?"
+    return 1
+  fi
+
   sudo tar -zxvf /tmp/db2.agra.managedmachine.com-data-${TARGET_DATE}.tar.gz -C /var/lib/postgresql/9.2
   sudo tar -zxvf /tmp/db2.agra.managedmachine.com-xlog-${TARGET_DATE}.tar.gz -C /var/lib/postgresql/9.2
 }
@@ -46,6 +51,9 @@ sudo mv /var/lib/postgresql/9.2/main /var/lib/postgresql/9.2/main.old
 
 # get the backup file 
 retrieve_and_unpack_backups $DATABASE_DATE
+if [ $? -ne 0 ]; then
+    exit 1
+fi
 
 # The backup_label file is broken due to a bug.  It confuses pg.  Get rid of it.
 sudo rm /var/lib/postgresql/9.2/main/backup_label
