@@ -39,3 +39,7 @@ Go to the directory where Vagrant put the scripts:
 Run the <code>restore_db.sh</code> script, specifying a date in ISO 8601 format, like so:
 
     ./restore_db.sh 2014-03-24
+
+If everything worked, you should now be able to access the database:
+
+    sudo -u postgres psql agra_production
