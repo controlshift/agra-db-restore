@@ -47,6 +47,7 @@ sudo sed -i "s/#archive_mod = off/archive_mod = off/" "$PG_CONF"
 sudo service postgresql stop
 
 # move aside the old pg files
+sudo rm -rf /var/lib/postgresql/9.2/main.old
 sudo mv /var/lib/postgresql/9.2/main /var/lib/postgresql/9.2/main.old
 
 # get the backup file 
